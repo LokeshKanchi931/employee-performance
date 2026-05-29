@@ -10,6 +10,9 @@ import com.springboot.employeeperformance.repository.*;
 import com.springboot.employeeperformance.service.interfaces.IEmployeeService;
 import com.springboot.employeeperformance.service.interfaces.IReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +31,11 @@ public class ReviewService implements IReviewService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "employee-reviews", key = "#request.employeeId"),
+            @CacheEvict(value = "cycle-summaries", key = "#request.cycleId"),
+            @CacheEvict(value = "employee-ratings", allEntries = true)
+    })
     public Responses.ReviewWithCycle submitReview(Requests.SubmitReview request) {
         Employee employee = employeeService.getOrThrow(request.getEmployeeId());
 
@@ -62,6 +70,7 @@ public class ReviewService implements IReviewService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "employee-reviews", key = "#employeeId")
     public List<Responses.ReviewWithCycle> getReviewsForEmployee(Long employeeId) {
         employeeService.getOrThrow(employeeId);
         return reviewRepository.findByEmployeeIdWithCycleAndReviewer(employeeId)
@@ -72,6 +81,7 @@ public class ReviewService implements IReviewService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "cycle-summaries", key = "#cycleId")
     public Responses.CycleSummary getCycleSummary(Long cycleId) {
         ReviewCycle cycle = cycleRepository.findById(cycleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cycle not found: " + cycleId));

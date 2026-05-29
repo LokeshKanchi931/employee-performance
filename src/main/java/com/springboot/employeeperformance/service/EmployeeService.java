@@ -8,6 +8,8 @@ import com.springboot.employeeperformance.mapper.EmployeeMapper;
 import com.springboot.employeeperformance.repository.EmployeeRepository;
 import com.springboot.employeeperformance.service.interfaces.IEmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "employee-ratings", allEntries = true)
     public Responses.EmployeeResponse createEmployee(Requests.CreateEmployee request) {
         Employee employee = Employee.builder()
                 .name(request.getName())
@@ -35,6 +38,7 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "employee-ratings", allEntries = true)
     public Responses.EmployeeResponse terminateEmployee(Long id, Requests.TerminateEmployee request) {
         Employee employee = getOrThrow(id);
 
@@ -52,6 +56,7 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "employee-ratings", key = "#department + '-' + #minRating")
     public List<Responses.EmployeeWithRating> findByDepartmentAndMinRating(
             String department, double minRating) {
 

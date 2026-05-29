@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 public class Responses {
 
     @Getter @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class EmployeeResponse {
         private Long id;
         private String name;
@@ -21,6 +23,8 @@ public class Responses {
     }
 
     @Getter @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class ReviewWithCycle {
         private Long reviewId;
         private Short rating;
@@ -35,12 +39,16 @@ public class Responses {
     }
 
     @Getter @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class ReviewerInfo {
         private Long id;
         private String name;
     }
 
     @Getter @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class CycleSummaryLine {
         private Long id;
         private String name;
@@ -50,6 +58,8 @@ public class Responses {
     }
 
     @Getter @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class CycleSummary {
         private Long cycleId;
         private String cycleName;
@@ -61,6 +71,8 @@ public class Responses {
     }
 
     @Getter @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class EmployeeWithRating {
         private Long id;
         private String name;
@@ -70,6 +82,8 @@ public class Responses {
     }
 
     @Getter @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class GoalResponse {
         private Long id;
         private String title;
@@ -81,6 +95,8 @@ public class Responses {
     }
 
     @Getter @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class CycleResponse {
         private Long id;
         private String name;
@@ -93,6 +109,8 @@ public class Responses {
     }
 
     @Getter @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class WeightViolation {
         private Long employeeId;
         private String employeeName;

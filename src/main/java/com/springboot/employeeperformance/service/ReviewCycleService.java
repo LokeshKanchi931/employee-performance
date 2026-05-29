@@ -9,6 +9,8 @@ import com.springboot.employeeperformance.repository.GoalRepository;
 import com.springboot.employeeperformance.repository.ReviewCycleRepository;
 import com.springboot.employeeperformance.service.interfaces.IReviewCycleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,7 @@ public class ReviewCycleService implements IReviewCycleService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "review-cycles", allEntries = true)
     public Responses.CycleResponse createCycle(Requests.CreateCycle request) {
         if (!request.getEndDate().isAfter(request.getStartDate())) {
             throw new IllegalArgumentException("End date must be after start date");
@@ -40,6 +43,11 @@ public class ReviewCycleService implements IReviewCycleService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "review-cycles", allEntries = true),
+            @CacheEvict(value = "cycle-summaries", allEntries = true),
+            @CacheEvict(value = "employee-ratings", allEntries = true)
+    })
     public Responses.CycleResponse closeCycle(Long cycleId) {
         ReviewCycle cycle = cycleRepository.findById(cycleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cycle not found: " + cycleId));
