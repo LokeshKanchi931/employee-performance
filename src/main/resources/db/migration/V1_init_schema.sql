@@ -22,7 +22,7 @@ CREATE TABLE employees (
 );
 
 CREATE INDEX idx_employees_department ON employees(department);
-CREATE INDEX idx_employees_active     ON employees(is_active);
+CREATE INDEX idx_employees_active     ON employees(id) WHERE is_active = true;
 
 
 -- ── REVIEW CYCLES ────────────────────────────────────────────
