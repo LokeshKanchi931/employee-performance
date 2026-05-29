@@ -2,6 +2,7 @@ package com.springboot.employeeperformance.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "goals",
@@ -11,7 +12,7 @@ import lombok.*;
                 @Index(name = "idx_goals_employee_cycle", columnList = "employee_id,cycle_id"),
                 @Index(name = "idx_goals_status",         columnList = "status")
         })
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
 public class Goal extends Auditable {
 
     public enum Status { pending, completed, missed }

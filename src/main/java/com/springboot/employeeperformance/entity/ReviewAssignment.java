@@ -2,6 +2,7 @@ package com.springboot.employeeperformance.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "review_assignments",
@@ -14,7 +15,7 @@ import lombok.*;
                 @Index(name = "idx_assignments_reviewer", columnList = "reviewer_id"),
                 @Index(name = "idx_assignments_cycle",    columnList = "cycle_id")
         })
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
 public class ReviewAssignment extends Auditable {
 
     @Id

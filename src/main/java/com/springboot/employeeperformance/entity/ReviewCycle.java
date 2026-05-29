@@ -3,6 +3,7 @@ package com.springboot.employeeperformance.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
         indexes = {
                 @Index(name = "idx_cycles_status", columnList = "status")
         })
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
 public class ReviewCycle extends Auditable {
 
     public enum Status { open, closed }

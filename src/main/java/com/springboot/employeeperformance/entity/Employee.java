@@ -2,6 +2,7 @@ package com.springboot.employeeperformance.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
                 @Index(name = "idx_employees_department", columnList = "department"),
                 @Index(name = "idx_employees_active",     columnList = "is_active")
         })
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
 public class Employee extends Auditable {
 
     @Id

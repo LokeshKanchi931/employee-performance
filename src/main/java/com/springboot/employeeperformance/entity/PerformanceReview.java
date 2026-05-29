@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
                 @Index(name = "idx_reviews_reviewer",       columnList = "reviewer_id"),
                 @Index(name = "idx_reviews_employee_cycle", columnList = "employee_id,cycle_id")
         })
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @SuperBuilder
 public class PerformanceReview extends Auditable {
 
     public enum ReviewType { manager, peer, self }
