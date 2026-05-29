@@ -58,7 +58,8 @@ public class EmployeeService implements IEmployeeService {
         return employeeRepository
                 .findActiveByDepartmentAndMinRating(department, minRating)
                 .stream()
-                .map(row -> employeeMapper.toResponseWithRating((Employee) row[0], (Double) row[1]))
+                .map(summary -> employeeMapper.toResponseWithRating
+                        (summary.getEmployee(), summary.getAvgRating()))
                 .toList();
     }
 

@@ -1,5 +1,6 @@
 package com.springboot.employeeperformance.repository;
 
+import com.springboot.employeeperformance.dto.EmployeePerformanceSummary;
 import com.springboot.employeeperformance.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,16 +16,17 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
      * Single JOIN + GROUP BY — no N+1.
      */
     @Query("""
-        SELECT e, AVG(r.rating) AS avgRating
+        SELECT e AS employee,
+                COALESCE(AVG(r.rating), 0.0) AS avgRating
         FROM Employee e
-        JOIN PerformanceReview r ON r.employee = e
+        LEFT JOIN PerformanceReview r ON r.employee = e
         WHERE e.isActive = true
           AND (:department IS NULL OR e.department = :department)
         GROUP BY e
-        HAVING AVG(r.rating) >= :minRating
+        HAVING COALESCE(AVG(r.rating), 0.0) >= :minRating
         ORDER BY avgRating DESC
         """)
-    List<Object[]> findActiveByDepartmentAndMinRating(
+    List<EmployeePerformanceSummary> findActiveByDepartmentAndMinRating(
             @Param("department") String department,
             @Param("minRating") double minRating);
 }
