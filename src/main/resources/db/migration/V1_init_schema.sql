@@ -5,6 +5,7 @@
 -- ── EMPLOYEES ────────────────────────────────────────────────
 CREATE TABLE employees (
                            id                  BIGSERIAL PRIMARY KEY,
+                           version     INTEGER         NOT NULL DEFAULT 0,
                            name                VARCHAR(255)    NOT NULL,
                            department          VARCHAR(100)    NOT NULL,
                            role                VARCHAR(100)    NOT NULL,
@@ -28,6 +29,7 @@ CREATE INDEX idx_employees_active     ON employees(id) WHERE is_active = true;
 -- ── REVIEW CYCLES ────────────────────────────────────────────
 CREATE TABLE review_cycles (
                                id          BIGSERIAL PRIMARY KEY,
+                               version     INTEGER         NOT NULL DEFAULT 0,
                                name        VARCHAR(100)    NOT NULL UNIQUE,
                                start_date  DATE            NOT NULL,
                                end_date    DATE            NOT NULL,
@@ -50,6 +52,7 @@ CREATE INDEX idx_cycles_status ON review_cycles(status);
 -- updated_at tracks if a review was edited after submission.
 CREATE TABLE performance_reviews (
                                      id              BIGSERIAL PRIMARY KEY,
+                                     version     INTEGER         NOT NULL DEFAULT 0,
                                      employee_id     BIGINT          NOT NULL REFERENCES employees(id)     ON DELETE CASCADE,
                                      cycle_id        BIGINT          NOT NULL REFERENCES review_cycles(id) ON DELETE RESTRICT,
                                      reviewer_id     BIGINT          NULL     REFERENCES employees(id)     ON DELETE SET NULL,
@@ -76,6 +79,7 @@ CREATE INDEX idx_reviews_employee_cycle  ON performance_reviews(employee_id, cyc
 -- before a cycle can be closed. Enforced at application layer on cycle close.
 CREATE TABLE goals (
                        id          BIGSERIAL PRIMARY KEY,
+                       version     INTEGER         NOT NULL DEFAULT 0,
                        employee_id BIGINT          NOT NULL REFERENCES employees(id)     ON DELETE CASCADE,
                        cycle_id    BIGINT          NOT NULL REFERENCES review_cycles(id) ON DELETE RESTRICT,
                        title       VARCHAR(255)    NOT NULL,

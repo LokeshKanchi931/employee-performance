@@ -21,6 +21,9 @@ public class Employee extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Version
+    private Integer version;
+
     @Column(nullable = false)
     private String name;
 
