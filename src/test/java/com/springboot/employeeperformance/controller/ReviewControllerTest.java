@@ -40,12 +40,10 @@ class ReviewControllerTest {
 
     @Test
     void submitReview_Success() throws Exception {
-        // Build Request
         var request = new Requests.SubmitReview(
                 1L, 10L, 5L, ReviewType.manager, (short) 4, "Great progress", "system"
         );
 
-        // Build Response using your @Builder
         var response = Responses.ReviewWithCycle.builder()
                 .reviewId(100L)
                 .rating((short) 4)
@@ -65,7 +63,7 @@ class ReviewControllerTest {
 
     @Test
     void createCycle_Success() throws Exception {
-        // Build Request
+
         var request = new Requests.CreateCycle(
                 "Annual 2026",
                 LocalDate.of(2026, 1, 1),
@@ -73,7 +71,6 @@ class ReviewControllerTest {
                 "system"
         );
 
-        // FIX: Build Response using your @Builder to match the 8 fields
         var response = Responses.CycleResponse.builder()
                 .id(1L)
                 .name("Annual 2026")

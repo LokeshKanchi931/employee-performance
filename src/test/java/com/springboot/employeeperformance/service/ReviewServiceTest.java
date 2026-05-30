@@ -87,7 +87,6 @@ class ReviewServiceTest {
         defaultPageable = PageRequest.of(0, 10);
     }
 
-    // ── submitReview ──────────────────────────────────────────
 
     @Nested
     @DisplayName("submitReview")
@@ -180,7 +179,6 @@ class ReviewServiceTest {
         }
     }
 
-    // ── getReviewsForEmployee (paginated) ─────────────────────
 
     @Nested
     @DisplayName("getReviewsForEmployee")
@@ -249,7 +247,6 @@ class ReviewServiceTest {
         }
     }
 
-    // ── getCycleSummary ───────────────────────────────────────
 
     @Nested
     @DisplayName("getCycleSummary")
@@ -307,7 +304,6 @@ class ReviewServiceTest {
         }
     }
 
-    // ── helpers ───────────────────────────────────────────────
 
     private Requests.SubmitReview reviewRequest(
             Long employeeId, Long cycleId, Long reviewerId, short rating) {

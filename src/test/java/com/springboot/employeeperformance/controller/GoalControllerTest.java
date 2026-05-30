@@ -35,7 +35,6 @@ class GoalControllerTest {
     @Test
     @DisplayName("POST /goals - Success")
     void createGoal_Success() throws Exception {
-        // Arrange: Matching your Requests.CreateGoal(employeeId, cycleId, title, weight, createdBy)
         var request = new Requests.CreateGoal(
                 1L,
                 10L,
@@ -44,7 +43,6 @@ class GoalControllerTest {
                 "manager_user"
         );
 
-        // Build Response using the @Builder from your Responses.GoalResponse
         var response = Responses.GoalResponse.builder()
                 .id(500L)
                 .title("Complete Spring Boot Testing")
@@ -56,7 +54,6 @@ class GoalControllerTest {
 
         when(goalService.createGoal(any(Requests.CreateGoal.class))).thenReturn(response);
 
-        // Act & Assert
         mockMvc.perform(post("/goals")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -70,11 +67,10 @@ class GoalControllerTest {
     @Test
     @DisplayName("POST /goals - Validation Failure (Weight too high)")
     void createGoal_ValidationFailure() throws Exception {
-        // Arrange: Weight is 150 (Max is 100 in your Requests.java)
+        // Weight is 150 (Max is 100)
         var invalidRequest = new Requests.CreateGoal(1L, 10L, "Invalid Goal", 150, "system");
 
-        // Act & Assert
-        // This should return 400 Bad Request because of @Valid in your Controller
+        // This should return 400 Bad Request
         mockMvc.perform(post("/goals")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))

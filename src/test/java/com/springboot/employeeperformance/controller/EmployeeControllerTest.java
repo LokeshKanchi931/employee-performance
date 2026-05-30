@@ -40,7 +40,6 @@ class EmployeeControllerTest {
 
     @Test
     void filterEmployees_ShouldThrowError_WhenRatingInvalid() throws Exception {
-        // Act & Assert
         mockMvc.perform(get("/employees")
                         .param("minRating", "6.0")) // Invalid rating
                 .andExpect(status().isBadRequest());
@@ -48,12 +47,10 @@ class EmployeeControllerTest {
 
     @Test
     void getEmployeeReviews_ShouldHandleCustomSort() throws Exception {
-        // Act
         mockMvc.perform(get("/employees/1/reviews")
                         .param("sort", "submittedAt,asc"))
                 .andExpect(status().isOk());
 
-        // Assert that the service received the correct Sort direction
         ArgumentCaptor<Pageable> captor = ArgumentCaptor.forClass(Pageable.class);
         verify(reviewService).getReviewsForEmployee(eq(1L), captor.capture());
 

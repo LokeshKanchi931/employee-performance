@@ -55,7 +55,7 @@ class EmployeeServiceTest {
         defaultPageable = PageRequest.of(0, 20);
     }
 
-    // ── createEmployee ────────────────────────────────────────
+    //Test Create Employee
 
     @Nested
     @DisplayName("createEmployee")
@@ -94,7 +94,7 @@ class EmployeeServiceTest {
         }
     }
 
-    // ── terminateEmployee ─────────────────────────────────────
+    // Terminate Employee
 
     @Nested
     @DisplayName("terminateEmployee")
@@ -142,7 +142,6 @@ class EmployeeServiceTest {
         }
     }
 
-    // ── getOrThrow ────────────────────────────────────────────
 
     @Nested
     @DisplayName("getOrThrow")
@@ -166,7 +165,7 @@ class EmployeeServiceTest {
         }
     }
 
-    // ── findByDepartmentAndMinRating (paginated) ──────────────
+    // findByDepartmentAndMinRating
 
     @Nested
     @DisplayName("findByDepartmentAndMinRating")
@@ -216,8 +215,7 @@ class EmployeeServiceTest {
         @DisplayName("page metadata is correctly populated")
         void pageMetadataIsCorrect() {
             EmployeePerformanceSummary s1 = mockSummary(alice, 4.5);
-            Pageable pageable = PageRequest.of(1, 2); // page 1, size 2
-            // Simulate: 5 total elements, page 1 of 3
+            Pageable pageable = PageRequest.of(1, 2);
             var pageResult = new PageImpl<>(List.of(s1), pageable, 5);
 
             when(employeeRepository.findActiveByDepartmentAndMinRating(any(), anyDouble(), any()))
@@ -237,7 +235,6 @@ class EmployeeServiceTest {
         }
     }
 
-    // ── helpers ───────────────────────────────────────────────
 
     private EmployeePerformanceSummary mockSummary(Employee employee, double avgRating) {
         return new EmployeePerformanceSummary() {
