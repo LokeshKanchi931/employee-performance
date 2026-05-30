@@ -209,11 +209,11 @@ This prevents retroactive data entry after a cycle is locked.
 
 *Terminated employees are excluded from forward-looking endpoints.*
 
-*Terminated employees are included in historical cycle summaries if their review predates termination.**
+*Terminated employees are included in historical cycle summaries if their review predates termination.*
 
-*Termination date must be after joining date.**
+*Termination date must be after joining date.*
 
-*Re-terminating an already terminated employee is rejected.**
+*Re-terminating an already terminated employee is rejected.*
 
 ### Goals
 
@@ -256,10 +256,10 @@ The summary query does three things: aggregate ratings, find the top performer, 
 
 ### Caching Strategy
 
-| What | Where | TTL |
-|---|---|---|
-| `GET /cycles/{id}/summary` | Redis (read-through) | 5 min, invalidated on new review submit |
-| `GET /employees/{id}/reviews` | Redis | 2 min |
-| `GET /employees?department&minRating` | Redis keyed on query params | 1 min |
+| What | Where | TTL                                      |
+|---|---|------------------------------------------|
+| `GET /cycles/{id}/summary` | Redis (read-through) | 10 min, invalidated on new review submit |
+| `GET /employees/{id}/reviews` | Redis | 2 hours                                  |
+| `GET /employees?department&minRating` | Redis keyed on query params | 10 min                                   |
 
 Cache invalidation: `POST /reviews` evicts the affected employee's review cache and the cycle summary cache. Use Spring Cache with a Redis backend (`@Cacheable`, `@CacheEvict`). Avoid caching write paths - only GETs.
