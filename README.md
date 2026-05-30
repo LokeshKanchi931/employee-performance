@@ -74,7 +74,12 @@ spring.datasource.password=password
 spring.jpa.hibernate.ddl-auto=validate
 spring.flyway.enabled=true
 ```
+## Diagrams
+### System Architecture
+![System Architecture](docs/system-architecture.png)
 
+### Entity Relations
+![ER Diagram](docs/er-diagram.png)
 ---
 ## API Reference
 
