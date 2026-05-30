@@ -76,7 +76,7 @@ spring.flyway.enabled=true
 ```
 ## Diagrams
 ### System Architecture
-![System Architecture](docs/system-architecture.png)
+![System Architecture](docs/system-architecture.PNG)
 
 ### Entity Relations
 ![ER Diagram](docs/er-diagram.png)
