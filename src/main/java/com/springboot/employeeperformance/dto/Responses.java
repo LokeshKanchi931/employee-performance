@@ -1,8 +1,10 @@
 package com.springboot.employeeperformance.dto;
 
 import lombok.*;
+import org.springframework.data.domain.Page;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Responses {
 
@@ -115,5 +117,32 @@ public class Responses {
         private Long employeeId;
         private String employeeName;
         private Integer totalWeight;
+    }
+
+    /**
+     * Generic paginated response wrapper.
+     * Wraps any list result with page metadata so callers know
+     * how many pages exist and how to request the next one.
+     *
+     */
+    @Getter @Builder
+    public static class PagedResponse<T> {
+        private List<T> content;
+        private int page;
+        private int size;
+        private long totalElements;
+        private int totalPages;
+        private boolean last;
+
+        public static <T> PagedResponse<T> from(Page<T> page) {
+            return PagedResponse.<T>builder()
+                    .content(page.getContent())
+                    .page(page.getNumber())
+                    .size(page.getSize())
+                    .totalElements(page.getTotalElements())
+                    .totalPages(page.getTotalPages())
+                    .last(page.isLast())
+                    .build();
+        }
     }
 }

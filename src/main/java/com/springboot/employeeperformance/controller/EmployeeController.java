@@ -8,6 +8,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,9 +64,14 @@ public class EmployeeController {
                     @ApiResponse(responseCode = "404", description = "Employee ID not found")
             }
     )
-    public ResponseEntity<List<Responses.ReviewWithCycle>> getEmployeeReviews(
-            @PathVariable Long id) {
-        return ResponseEntity.ok(reviewService.getReviewsForEmployee(id));
+    public ResponseEntity<Responses.PagedResponse<Responses.ReviewWithCycle>> getEmployeeReviews(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "0")  int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "submittedAt,desc") String sort) {
+
+        Pageable pageable = buildPageable(page, size, sort);
+        return ResponseEntity.ok(reviewService.getReviewsForEmployee(id,pageable));
     }
 
     @GetMapping
@@ -75,14 +83,34 @@ public class EmployeeController {
                     @ApiResponse(responseCode = "400", description = "Invalid rating range provided (must be 0-5)")
             }
     )
-    public ResponseEntity<List<Responses.EmployeeWithRating>> filterEmployees(
+    public ResponseEntity<Responses.PagedResponse<Responses.EmployeeWithRating>> filterEmployees(
             @RequestParam(required = false) String department,
-            @RequestParam(defaultValue = "0") double minRating) {
+            @RequestParam(defaultValue = "0") double minRating,
+            @RequestParam(defaultValue = "0")  int page,
+            @RequestParam(defaultValue = "20") int size) {
 
         if (minRating < 0 || minRating > 5) {
             throw new IllegalArgumentException("minRating must be between 0 and 5");
         }
+        if (size > 100) {
+            throw new IllegalArgumentException("Page size must not exceed 100");
+        }
+        Pageable pageable = PageRequest.of(page, size);
+
         return ResponseEntity.ok(
-                employeeService.findByDepartmentAndMinRating(department, minRating));
+                employeeService.findByDepartmentAndMinRating(department, minRating, pageable));
+    }
+
+    private Pageable buildPageable(int page, int size, String sort) {
+        if (size > 100) {
+            throw new IllegalArgumentException("Page size must not exceed 100");
+        }
+        // sort format: "field,direction" e.g. "submittedAt,desc"
+        String[] parts = sort.split(",");
+        String field = parts[0];
+        Sort.Direction direction = parts.length > 1 && parts[1].equalsIgnoreCase("asc")
+                ? Sort.Direction.ASC
+                : Sort.Direction.DESC;
+        return PageRequest.of(page, size, Sort.by(direction, field));
     }
 }

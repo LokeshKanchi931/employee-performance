@@ -10,6 +10,8 @@ import com.springboot.employeeperformance.service.interfaces.IEmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,15 +59,15 @@ public class EmployeeService implements IEmployeeService {
     @Override
     @Transactional(readOnly = true)
     @Cacheable(value = "employee-ratings", key = "#department + '-' + #minRating")
-    public List<Responses.EmployeeWithRating> findByDepartmentAndMinRating(
-            String department, double minRating) {
+    public Responses.PagedResponse<Responses.EmployeeWithRating> findByDepartmentAndMinRating(
+            String department, double minRating, Pageable pageable) {
 
-        return employeeRepository
-                .findActiveByDepartmentAndMinRating(department, minRating)
-                .stream()
+        Page<Responses.EmployeeWithRating> page =  employeeRepository
+                .findActiveByDepartmentAndMinRating(department, minRating, pageable)
                 .map(summary -> employeeMapper.toResponseWithRating
-                        (summary.getEmployee(), summary.getAvgRating()))
-                .toList();
+                        (summary.getEmployee(), summary.getAvgRating()));
+
+        return Responses.PagedResponse.from(page);
     }
 
     @Override

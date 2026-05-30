@@ -3,12 +3,12 @@ package com.springboot.employeeperformance.service.interfaces;
 import com.springboot.employeeperformance.dto.Requests;
 import com.springboot.employeeperformance.dto.Responses;
 import com.springboot.employeeperformance.entity.Employee;
-
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public interface IEmployeeService {
     Responses.EmployeeResponse createEmployee(Requests.CreateEmployee request);
     Responses.EmployeeResponse terminateEmployee(Long id, Requests.TerminateEmployee request);
-    List<Responses.EmployeeWithRating> findByDepartmentAndMinRating(String department, double minRating);
+    Responses.PagedResponse<Responses.EmployeeWithRating> findByDepartmentAndMinRating(
+            String department, double minRating, Pageable pageable);
     Employee getOrThrow(Long id);
 }

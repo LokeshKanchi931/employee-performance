@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,12 +73,13 @@ public class ReviewService implements IReviewService {
     @Override
     @Transactional(readOnly = true)
     @Cacheable(value = "employee-reviews", key = "#employeeId")
-    public List<Responses.ReviewWithCycle> getReviewsForEmployee(Long employeeId) {
+    public Responses.PagedResponse<Responses.ReviewWithCycle> getReviewsForEmployee(Long employeeId
+            , Pageable pageable) {
         employeeService.getOrThrow(employeeId);
-        return reviewRepository.findByEmployeeIdWithCycleAndReviewer(employeeId)
-                .stream()
-                .map(reviewMapper::toReviewWithCycle)
-                .toList();
+        Page<Responses.ReviewWithCycle> page = reviewRepository.
+                findByEmployeeIdWithCycleAndReviewer(employeeId, pageable)
+                .map(reviewMapper::toReviewWithCycle);
+        return Responses.PagedResponse.from(page);
     }
 
     @Override
