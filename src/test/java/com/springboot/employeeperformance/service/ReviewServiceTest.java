@@ -1,4 +1,4 @@
-package com.springboot.employeeperformance.repository;
+package com.springboot.employeeperformance.service;
 
 import com.springboot.employeeperformance.dto.Requests;
 import com.springboot.employeeperformance.dto.Responses;
@@ -6,7 +6,9 @@ import com.springboot.employeeperformance.entity.*;
 import com.springboot.employeeperformance.exception.ResourceNotFoundException;
 import com.springboot.employeeperformance.mapper.EmployeeMapper;
 import com.springboot.employeeperformance.mapper.ReviewMapper;
-import com.springboot.employeeperformance.service.ReviewService;
+import com.springboot.employeeperformance.repository.GoalRepository;
+import com.springboot.employeeperformance.repository.PerformanceReviewRepository;
+import com.springboot.employeeperformance.repository.ReviewCycleRepository;
 import com.springboot.employeeperformance.service.interfaces.IEmployeeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,9 +33,12 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ReviewServiceTest {
 
-    @Mock PerformanceReviewRepository reviewRepository;
-    @Mock ReviewCycleRepository       cycleRepository;
-    @Mock GoalRepository              goalRepository;
+    @Mock
+    PerformanceReviewRepository reviewRepository;
+    @Mock
+    ReviewCycleRepository cycleRepository;
+    @Mock
+    GoalRepository goalRepository;
     @Mock IEmployeeService            employeeService;
     @Mock ReviewMapper                reviewMapper;
     @Mock EmployeeMapper              employeeMapper;
