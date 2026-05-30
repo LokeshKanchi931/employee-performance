@@ -1,6 +1,6 @@
 -- ============================================================
 -- HR Performance Tool - Rollback Initial Schema
--- Flyway Undo Migration: U1__init_schema.sql
+-- Flyway Undo Migration:U1__init_schema.sql
 -- ============================================================
 
 -- Drop child tables first due to FK dependencies
